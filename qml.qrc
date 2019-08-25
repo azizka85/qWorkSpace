@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>icon-menu.svg</file>
+        <file>icon-job-64x64.png</file>
+        <file>MenuItem.qml</file>
+        <file>icon-units-64x64.png</file>
+        <file>icon-formation-fluids-64x64.png</file>
+        <file>icon-well-reservoir-64x64.png</file>
+        <file>icon-zones-64x64.png</file>
+        <file>icon-wellbore-64x64.png</file>
+        <file>icon-gun-system-64x64.png</file>
+        <file>icon-output-64x64.png</file>
+        <file>BarItem.qml</file>
+        <file>WorkSpace.qml</file>
+        <file>icon-split.svg</file>
+        <file>SpaceItem.qml</file>
+        <file>SpaceSplit.qml</file>
+    </qresource>
+</RCC>
