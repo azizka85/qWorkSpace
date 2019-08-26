@@ -1,12 +1,13 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.4 as C2
+import QtQuick.Controls 1.4 as C1
 
 Item {
     default property alias controls: privateSpace.children
 
     property alias menuItems: menuColumn.children
     property alias menuColor: menu.color
-    property alias menuBorder: menu.border
+    property alias menuBorder: menu.border    
 
     property var mainWindow: null
 
@@ -74,11 +75,35 @@ Item {
         SpaceSplit { }
     }
 
+    Component {
+        id: menuItem
+
+        C1.MenuItem {
+            property var item
+
+            text: item.title
+            enabled: item.visible
+        }
+    }
+
     Component.onCompleted: {
-        for(var i = 0; i < controls.length; i++) {
+        for(var i = 0; i < controls.length; i++)
+        {
             if(i > 0) privateSpace.splitters.push(splitter.createObject(workSpace));
             controls[i].visible = false;
             controls[i].space = workSpace;
+
+            for(var j = controls.length - 1; j >= 0; j--)
+            {
+                if(controls[j] !== controls[i])
+                {
+                    var mi = menuItem.createObject(workSpace);
+
+                    mi.item = controls[j];
+
+                    controls[i].insertIn.insertItem(0, mi);
+                }
+            }
         }
     }
 

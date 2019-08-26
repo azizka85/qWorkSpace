@@ -61,7 +61,7 @@ Window {
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-wellbore-64x64.png"
 
-                onClick: workSpace.insertFirst(wellboreItem)
+                onClick: workSpace.insertFirst(wellBoreItem)
             },
 
             MenuItem {
@@ -85,7 +85,7 @@ Window {
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-fullscreen-64x64.png"
 
-                onClick: mainWindow.visibility = mainWindow.visibility == Window.Windowed ? Window.FullScreen : Window.Windowed;
+                onClick:  mainWindow.visibility = mainWindow.visibility == Window.Windowed ? Window.FullScreen : Window.Windowed;
             }
 
         ]
@@ -93,6 +93,7 @@ Window {
         SpaceItem {
             id: jobItem
             anchors.fill: parent
+            title: "job"
 
             Rectangle {
                 anchors.fill: parent
@@ -100,7 +101,7 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "job"
+                    text: jobItem.title
                 }
             }
         }
@@ -108,6 +109,7 @@ Window {
         SpaceItem {
             id: unitsItem
             anchors.fill: parent
+            title: "units"
 
             Rectangle {
                 anchors.fill: parent
@@ -115,7 +117,7 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "units"
+                    text: unitsItem.title
                 }
             }
         }
@@ -123,6 +125,7 @@ Window {
         SpaceItem {
             id: ffItem
             anchors.fill: parent
+            title: "ff"
 
             Rectangle {
                 anchors.fill: parent
@@ -130,7 +133,7 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "ff"
+                    text: ffItem.title
                 }
             }
         }
@@ -138,6 +141,7 @@ Window {
         SpaceItem {
             id: wrItem
             anchors.fill: parent
+            title: "wr"
 
             Rectangle {
                 anchors.fill: parent
@@ -145,7 +149,7 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "wr"
+                    text: wrItem.title
                 }
             }
         }
@@ -153,6 +157,7 @@ Window {
         SpaceItem {
             id: zonesItem
             anchors.fill: parent
+            title: "zones"
 
             Rectangle {
                 anchors.fill: parent
@@ -160,14 +165,15 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "zones"
+                    text: zonesItem.title
                 }
             }
         }
 
         SpaceItem {
-            id: wellboreItem
+            id: wellBoreItem
             anchors.fill: parent
+            title: "wellbore"
 
             Rectangle {
                 anchors.fill: parent
@@ -175,7 +181,7 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "wellbore"
+                    text: wellBoreItem.title
                 }
             }
         }
@@ -183,6 +189,7 @@ Window {
         SpaceItem {
             id: gsItem
             anchors.fill: parent
+            title: "gs"
 
             Rectangle {
                 anchors.fill: parent
@@ -190,7 +197,7 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "gs"
+                    text: gsItem.title
                 }
             }
         }
@@ -198,6 +205,7 @@ Window {
         SpaceItem {
             id: outputItem
             anchors.fill: parent
+            title: "output"
 
             Rectangle {
                 anchors.fill: parent
@@ -205,7 +213,7 @@ Window {
 
                 Text {
                     anchors.centerIn: parent
-                    text: "output"
+                    text: outputItem.title
                 }
             }
         }

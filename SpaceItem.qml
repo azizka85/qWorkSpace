@@ -1,4 +1,5 @@
 import QtQuick 2.12
+import QtQml 2.12
 import QtQuick.Controls 1.4 as C1
 
 Item {
@@ -10,6 +11,9 @@ Item {
 
     property alias barColor: topBar.color
     property alias barBorder: topBar.border
+    property var insertIn: insertInMenu
+
+    property string title: "Title"
 
     id: spaceItem
 
@@ -43,6 +47,11 @@ Item {
                     text: "Split horizontal"
 
                     onTriggered: splitHorizontal()
+                }
+
+                C1.Menu {
+                    id: insertInMenu
+                    title: "Insert in ..."
                 }
 
                 C1.MenuItem {
@@ -103,5 +112,10 @@ Item {
     function splitHorizontal()
     {
         if(space != null) space.splitHorizontal(spaceItem);
+    }
+
+    function splitWith(item)
+    {
+        console.log(item.title);
     }
 }
