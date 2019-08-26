@@ -2,9 +2,12 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 
 Window {
+    property alias space: workSpace
+
+    id: mainWindow
     visible: true
-    width: 800
-    height: 640
+    width: 960
+    height: 720
     title: qsTr("qWorkspace")
 
     WorkSpace {
@@ -75,7 +78,16 @@ Window {
                 iconSource: "qrc:/icon-output-64x64.png"
 
                 onClick: workSpace.insertFirst(outputItem)
+            },
+
+            MenuItem {
+                id: fullScreenMenuItem
+                color: workSpace.menuColor
+                iconSource: "qrc:/icon-fullscreen-64x64.png"
+
+                onClick: mainWindow.visibility = mainWindow.visibility == Window.Windowed ? Window.FullScreen : Window.Windowed;
             }
+
         ]
 
         SpaceItem {

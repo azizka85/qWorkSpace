@@ -8,6 +8,10 @@ Item {
     property alias menuColor: menu.color
     property alias menuBorder: menu.border
 
+    property var mainWindow: null
+
+    id: workSpace
+
     Rectangle {
         id: menu
         anchors { top: parent.top; bottom: parent.bottom; left: parent.left }
@@ -72,9 +76,9 @@ Item {
 
     Component.onCompleted: {
         for(var i = 0; i < controls.length; i++) {
-            if(i > 0) privateSpace.splitters.push(splitter.createObject(this));
+            if(i > 0) privateSpace.splitters.push(splitter.createObject(workSpace));
             controls[i].visible = false;
-            controls[i].space = this;
+            controls[i].space = workSpace;
         }
     }
 
@@ -85,7 +89,7 @@ Item {
     }
 
     function unSplit(item)
-    {
+    {                
         if(item.visible === true)
         {
             var typeId = item.parent.typeId;
@@ -97,7 +101,7 @@ Item {
                 var share = typeId === 1 ? splitter.spaceItem2.children[0] : splitter.spaceItem1.children[0];
 
                 share.parent = splitter.parent;
-                splitter.parent = this;
+                splitter.parent = workSpace;
                 splitter.visible = false;
 
                 privateSpace.splitters.push(splitter);
@@ -109,11 +113,6 @@ Item {
     {
         item.parent = privateSpace;
         item.visible = false;
-
-        console.log(controls.length);
-        console.log(contentSpace.children.length);
-        console.log(privateSpace.splitters.length);
-        console.log(privateSpace.windows.length);
     }
 
     function insertFirst(item, orientation, ratio, isFirst)
@@ -174,5 +173,50 @@ Item {
         share.parent = isFirst ? splitter.spaceItem2 : splitter.spaceItem1;
 
         return splitter;
+    }
+
+    function canSplit()
+    {
+        return contentSpace.children.length > 0 && contentSpace.children[0].typeId === 3;
+    }
+
+    function canDock()
+    {
+        return mainWindow != null;
+    }
+
+    function canUnDock()
+    {
+        return mainWindow == null;
+    }
+
+    function splitVertical(item)
+    {
+        if(item.visible === true)
+        {
+            var typeId = item.parent.typeId;
+
+            if(typeId > 0)
+            {
+                var splitter = item.parent.parent.parent;
+
+                splitter.orientation = Qt.Vertical;
+            }
+        }
+    }
+
+    function splitHorizontal(item)
+    {
+        if(item.visible === true)
+        {
+            var typeId = item.parent.typeId;
+
+            if(typeId > 0)
+            {
+                var splitter = item.parent.parent.parent;
+
+                splitter.orientation = Qt.Horizontal;
+            }
+        }
     }
 }

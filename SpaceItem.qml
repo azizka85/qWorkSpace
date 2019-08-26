@@ -2,12 +2,16 @@ import QtQuick 2.12
 import QtQuick.Controls 1.4 as C1
 
 Item {
-    property WorkSpace space
+    readonly property int typeId: 4
+
+    property WorkSpace space: null
 
     default property alias controls: content.children
 
     property alias barColor: topBar.color
     property alias barBorder: topBar.border
+
+    id: spaceItem
 
     Rectangle {
         id: topBar
@@ -28,22 +32,39 @@ Item {
                 id: splitMenu
 
                 C1.MenuItem {
+                    id: vSplitMenuItem
                     text: "Split vertical"
-                    visible: canSplit()
+
+                    onTriggered: splitVertical()
                 }
 
                 C1.MenuItem {
+                    id: hSplitMenuItem
                     text: "Split horizontal"
-                    visible: canSplit()
+
+                    onTriggered: splitHorizontal()
                 }
 
                 C1.MenuItem {
+                    id: unDockMenuItem
                     text: "Open in new window"
-                    visible: canUndock()
+                }
+
+                C1.MenuItem {
+                    id: dockMenuItem
+                    text: "Dock in main window"
                 }
 
                 C1.MenuItem {
                     text: "Close"
+
+                    onTriggered: hide()
+                }
+
+                onPopupVisibleChanged: {
+                    vSplitMenuItem.visible = hSplitMenuItem.visible = canSplit();
+                    unDockMenuItem.visible = canUnDock();
+                    dockMenuItem.visible = canDock();
                 }
             }
         }
@@ -54,11 +75,33 @@ Item {
         anchors { left: parent.left; right: parent.right; top: topBar.bottom; bottom: parent.bottom }
     }
 
-    function canSplit() {
-        return true;
+    function canSplit()
+    {
+        return space != null && space.canSplit();
     }
 
-    function canUndock() {
-        return true;
+    function canUnDock()
+    {
+        return space != null && space.canUnDock();
+    }
+
+    function canDock()
+    {
+        return space != null && space.canDock();
+    }
+
+    function hide()
+    {
+        if(space != null) space.hideItem(spaceItem);
+    }
+
+    function splitVertical()
+    {
+        if(space != null) space.splitVertical(spaceItem);
+    }
+
+    function splitHorizontal()
+    {
+        if(space != null) space.splitHorizontal(spaceItem);
     }
 }

@@ -2,6 +2,8 @@ import QtQuick 2.12
 import QtQuick.Controls 1.4 as C1
 
 C1.SplitView {
+    readonly property int typeId: 3
+
     property alias spaceItem1: item1
     property alias spaceItem2: item2
 
@@ -28,6 +30,8 @@ C1.SplitView {
     onResizingChanged: if(!resizing) ratio = Math.min(item1.width/spaceSplit.width, item1.height/spaceSplit.height)
 
     onRatioChanged: resizeItems()
+
+    onOrientationChanged: resizeItems()
 
     onWidthChanged: changeItemsWidth()
 

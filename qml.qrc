@@ -16,5 +16,6 @@
         <file>icon-split.svg</file>
         <file>SpaceItem.qml</file>
         <file>SpaceSplit.qml</file>
+        <file>icon-fullscreen-64x64.png</file>
     </qresource>
 </RCC>
