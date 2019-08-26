@@ -1,5 +1,5 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.4
+import QtQuick.Controls 2.4 as C2
 
 Item {
     default property alias controls: privateSpace.children
@@ -13,7 +13,7 @@ Item {
         z: 1
         visible: false
 
-        ScrollView {
+        C2.ScrollView {
             anchors.fill: parent
 
             Column {
