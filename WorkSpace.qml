@@ -2,7 +2,7 @@ import QtQuick 2.12
 import QtQuick.Controls 2.4 as C2
 
 Item {
-    default property alias controls: privateSpace.children
+    default property alias controls: contentSpace.children
 
     Rectangle {
         id: menu

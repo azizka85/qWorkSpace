@@ -6,7 +6,7 @@ Window {
     visible: true
     width: 800
     height: 640
-    title: qsTr("PerfoMunai'")
+    title: qsTr("qWorkspace")
 
     WorkSpace {
         anchors.fill: parent
