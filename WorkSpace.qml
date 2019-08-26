@@ -2,7 +2,11 @@ import QtQuick 2.12
 import QtQuick.Controls 2.4 as C2
 
 Item {
-    default property alias controls: contentSpace.children
+    default property alias controls: privateSpace.children
+
+    property alias menuItems: menuColumn.children
+    property alias menuColor: menu.color
+    property alias menuBorder: menu.border
 
     Rectangle {
         id: menu
@@ -14,62 +18,16 @@ Item {
         visible: false
 
         C2.ScrollView {
-            anchors.fill: parent
+            width: parent.width
+            height: parent.height-24
+            anchors { centerIn: parent }
 
             Column {
-                id: menuItems
+                id: menuColumn
                 width: parent.width-24
-                height: parent.height-24
+                height: parent.height
                 anchors { centerIn: parent }
                 spacing: 12
-
-                MenuItem {
-                    id: jobMenuItem
-                    color: menu.color
-                    iconSource: "qrc:/icon-job-64x64.png"
-                }
-
-                MenuItem {
-                    id: unitsMenuItem
-                    color: menu.color
-                    iconSource: "qrc:/icon-units-64x64.png"
-                }
-
-                MenuItem {
-                    id: ffMenuItem
-                    color: menu.color
-                    iconSource: "qrc:/icon-formation-fluids-64x64.png"
-                }
-
-                MenuItem {
-                    id: wrMenuItem
-                    color: menu.color
-                    iconSource: "qrc:/icon-well-reservoir-64x64.png"
-                }
-
-                MenuItem {
-                    id: zonesMenuItem
-                    color: menu.color
-                    iconSource: "qrc:/icon-zones-64x64.png"
-                }
-
-                MenuItem {
-                    id: wellboreMenuItem
-                    color: menu.color
-                    iconSource: "qrc:/icon-wellbore-64x64.png"
-                }
-
-                MenuItem {
-                    id: gsMenuItem
-                    color: menu.color
-                    iconSource: "qrc:/icon-gun-system-64x64.png"
-                }
-
-                MenuItem {
-                    id: outputMenuItem
-                    color: menu.color
-                    iconSource: "qrc:/icon-output-64x64.png"
-                }
             }
         }
     }
@@ -82,9 +40,12 @@ Item {
     }
 
     Item {
+        property var splitters: []
+        property var windows: []
+
         id: privateSpace
         visible: false
-    }
+    }        
 
     Rectangle {
         id: bottomBar
@@ -101,5 +62,117 @@ Item {
 
             onClick: menu.visible = !menu.visible
         }
+    }
+
+    Component {
+        id: splitter
+
+        SpaceSplit { }
+    }
+
+    Component.onCompleted: {
+        for(var i = 0; i < controls.length; i++) {
+            if(i > 0) privateSpace.splitters.push(splitter.createObject(this));
+            controls[i].visible = false;
+            controls[i].space = this;
+        }
+    }
+
+    function hideItem(item)
+    {
+        unSplit(item);
+        freeItem(item);
+    }
+
+    function unSplit(item)
+    {
+        if(item.visible === true)
+        {
+            var typeId = item.parent.typeId;
+
+            if(typeId > 0)
+            {
+                var splitter = item.parent.parent.parent;
+
+                var share = typeId === 1 ? splitter.spaceItem2.children[0] : splitter.spaceItem1.children[0];
+
+                share.parent = splitter.parent;
+                splitter.parent = this;
+                splitter.visible = false;
+
+                privateSpace.splitters.push(splitter);
+            }
+        }
+    }
+
+    function freeItem(item)
+    {
+        item.parent = privateSpace;
+        item.visible = false;
+
+        console.log(controls.length);
+        console.log(contentSpace.children.length);
+        console.log(privateSpace.splitters.length);
+        console.log(privateSpace.windows.length);
+    }
+
+    function insertFirst(item, orientation, ratio, isFirst)
+    {
+        if(orientation === undefined) orientation = Qt.Horizontal;
+        if(ratio === undefined) ratio = -1;
+        if(isFirst === undefined) isFirst = false;
+
+        if(item.visible === false)
+        {
+            if(contentSpace.children.length > 0)
+            {
+                var splitter = getSplitter(item, contentSpace.children[0], isFirst, ratio, orientation);
+
+                splitter.parent = contentSpace;
+                splitter.visible = true;
+            }
+            else
+            {
+                item.parent = contentSpace;
+            }
+
+            item.visible = true;
+        }
+    }
+
+    function insertItem(item, share, orientation, ratio, isFirst)
+    {
+        if(orientation === undefined) orientation = Qt.Horizontal;
+        if(share === undefined) share = null;
+        if(ratio === undefined) ratio = -1;
+        if(isFirst === undefined) isFirst = false;
+
+        if(item.visible === false)
+        {
+            if(share !== null && share.visible !== false)
+            {
+                var shareParent = share.parent;
+
+                var splitter = getSplitter(item, share, isFirst, ratio, orientation);
+
+                splitter.parent = shareParent;
+                splitter.visible = true;
+                item.visible = true;
+            }
+            else insertFirst(item);
+        }
+    }
+
+    function getSplitter(item, share, isFirst, ratio, orientation)
+    {
+        var splitter = privateSpace.splitters.pop();
+
+        splitter.ratio = ratio;
+        splitter.orientation = orientation;
+
+        item.parent = isFirst ? splitter.spaceItem1 : splitter.spaceItem2;
+        share.parent = isFirst ? splitter.spaceItem2 : splitter.spaceItem1;
+
+        return splitter;
     }
 }

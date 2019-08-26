@@ -1,9 +1,9 @@
 import QtQuick 2.12
-import QtQuick.Controls 1.4
+import QtQuick.Controls 1.4 as C1
 
-SplitView {
-    property alias dock1: item1
-    property alias dock2: item2
+C1.SplitView {
+    property alias spaceItem1: item1
+    property alias spaceItem2: item2
 
     property real ratio: -1
 
@@ -25,12 +25,9 @@ SplitView {
         id: item2
     }
 
-    onResizingChanged: {
-        if(!resizing) {
-            ratio = Math.min(item1.width/spaceSplit.width, item1.height/spaceSplit.height);
-            resizeItems();
-        }
-    }
+    onResizingChanged: if(!resizing) ratio = Math.min(item1.width/spaceSplit.width, item1.height/spaceSplit.height)
+
+    onRatioChanged: resizeItems()
 
     onWidthChanged: changeItemsWidth()
 

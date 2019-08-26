@@ -1,10 +1,13 @@
 import QtQuick 2.12
-import QtQuick.Controls 1.4
+import QtQuick.Controls 1.4 as C1
 
 Item {
     property WorkSpace space
 
-    property alias contentItem: content
+    default property alias controls: content.children
+
+    property alias barColor: topBar.color
+    property alias barBorder: topBar.border
 
     Rectangle {
         id: topBar
@@ -21,16 +24,27 @@ Item {
 
             onClick: splitMenu.popup()
 
-            Menu {
+            C1.Menu {
                 id: splitMenu
 
-                MenuItem { text: "Split vertical" }
+                C1.MenuItem {
+                    text: "Split vertical"
+                    visible: canSplit()
+                }
 
-                MenuItem { text: "Split horizontal" }
+                C1.MenuItem {
+                    text: "Split horizontal"
+                    visible: canSplit()
+                }
 
-                MenuItem { text: "Open in new window" }
+                C1.MenuItem {
+                    text: "Open in new window"
+                    visible: canUndock()
+                }
 
-                MenuItem { text: "Close" }
+                C1.MenuItem {
+                    text: "Close"
+                }
             }
         }
     }
@@ -38,5 +52,13 @@ Item {
     Item {
         id: content
         anchors { left: parent.left; right: parent.right; top: topBar.bottom; bottom: parent.bottom }
+    }
+
+    function canSplit() {
+        return true;
+    }
+
+    function canUndock() {
+        return true;
     }
 }

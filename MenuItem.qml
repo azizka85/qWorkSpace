@@ -4,6 +4,8 @@ import QtGraphicalEffects 1.0
 Rectangle {
     property alias iconSource: menuImage.source
 
+    signal click
+
     id: menuItem
     width: 64
     height: 64
@@ -29,5 +31,7 @@ Rectangle {
         anchors.fill: parent
         hoverEnabled: true
         cursorShape: containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+        onClicked: click()
     }
 }
