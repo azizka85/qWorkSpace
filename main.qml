@@ -2,8 +2,6 @@ import QtQuick 2.12
 import QtQuick.Window 2.12
 
 Window {
-    property alias space: workSpace
-
     id: mainWindow
     visible: true
     width: 960
@@ -16,7 +14,7 @@ Window {
 
         menuItems: [
 
-            MenuItem {
+            SpaceMenuItem {
                 id: jobMenuItem
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-job-64x64.png"
@@ -24,7 +22,7 @@ Window {
                 onClick: workSpace.insertFirst(jobItem)
             },
 
-            MenuItem {
+            SpaceMenuItem {
                 id: unitsMenuItem
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-units-64x64.png"
@@ -32,7 +30,7 @@ Window {
                 onClick: workSpace.insertFirst(unitsItem)
             },
 
-            MenuItem {
+            SpaceMenuItem {
                 id: ffMenuItem
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-formation-fluids-64x64.png"
@@ -40,7 +38,7 @@ Window {
                 onClick: workSpace.insertFirst(ffItem)
             },
 
-            MenuItem {
+            SpaceMenuItem {
                 id: wrMenuItem
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-well-reservoir-64x64.png"
@@ -48,7 +46,7 @@ Window {
                 onClick: workSpace.insertFirst(wrItem)
             },
 
-            MenuItem {
+            SpaceMenuItem {
                 id: zonesMenuItem
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-zones-64x64.png"
@@ -56,7 +54,7 @@ Window {
                 onClick: workSpace.insertFirst(zonesItem)
             },
 
-            MenuItem {
+            SpaceMenuItem {
                 id: wellboreMenuItem
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-wellbore-64x64.png"
@@ -64,7 +62,7 @@ Window {
                 onClick: workSpace.insertFirst(wellBoreItem)
             },
 
-            MenuItem {
+            SpaceMenuItem {
                 id: gsMenuItem
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-gun-system-64x64.png"
@@ -72,7 +70,7 @@ Window {
                 onClick: workSpace.insertFirst(gsItem)
             },
 
-            MenuItem {
+            SpaceMenuItem {
                 id: outputMenuItem
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-output-64x64.png"
@@ -80,7 +78,7 @@ Window {
                 onClick: workSpace.insertFirst(outputItem)
             },
 
-            MenuItem {
+            SpaceMenuItem {
                 id: fullScreenMenuItem
                 color: workSpace.menuColor
                 iconSource: "qrc:/icon-fullscreen-64x64.png"

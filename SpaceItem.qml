@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQml 2.12
-import QtQuick.Controls 1.4 as C1
+import QtQuick.Controls 2.4
 
 Item {
     readonly property int typeId: 4
@@ -11,7 +11,7 @@ Item {
 
     property alias barColor: topBar.color
     property alias barBorder: topBar.border
-    property var insertIn: insertInMenu
+    property alias insertInItems: insertInRepeater.model
 
     property string title: "Title"
 
@@ -32,48 +32,75 @@ Item {
 
             onClick: splitMenu.popup()
 
-            C1.Menu {
+            Menu {
                 id: splitMenu
 
-                C1.MenuItem {
+                MenuItem {
                     id: vSplitMenuItem
                     text: "Split vertical"
+                    height: visible ? implicitHeight : 0
 
                     onTriggered: splitVertical()
                 }
 
-                C1.MenuItem {
+                MenuItem {
                     id: hSplitMenuItem
                     text: "Split horizontal"
+                    height: visible ? implicitHeight : 0
 
                     onTriggered: splitHorizontal()
                 }
 
-                C1.Menu {
+                Menu {
                     id: insertInMenu
                     title: "Insert in ..."
+
+                    Repeater {
+                        id: insertInRepeater
+
+                        MenuItem {
+                            text: modelData.title
+                            visible: modelData.visible
+                            height: visible ? implicitHeight : 0
+
+                            onTriggered: splitWith(modelData);
+                        }
+                    }
                 }
 
-                C1.MenuItem {
+                MenuItem {
+                    id: insertFirstMenuItem
+                    text: "Insert first"
+
+                    onTriggered: insertFirst()
+                }
+
+                MenuItem {
                     id: unDockMenuItem
                     text: "Open in new window"
+                    height: visible ? implicitHeight : 0
+
+                    onTriggered: unDock()
                 }
 
-                C1.MenuItem {
+                MenuItem {
                     id: dockMenuItem
                     text: "Dock in main window"
+                    height: visible ? implicitHeight : 0
                 }
 
-                C1.MenuItem {
+                MenuItem {
                     text: "Close"
 
                     onTriggered: hide()
                 }
 
-                onPopupVisibleChanged: {
+                onAboutToShow: {
                     vSplitMenuItem.visible = hSplitMenuItem.visible = canSplit();
                     unDockMenuItem.visible = canUnDock();
                     dockMenuItem.visible = canDock();
+
+                    insertInMenu.enabled = insertInItems.some(item => item.visible);
                 }
             }
         }
@@ -92,6 +119,11 @@ Item {
     function canUnDock()
     {
         return space != null && space.canUnDock();
+    }
+
+    function unDock()
+    {
+        if(space != null) space.unDock(spaceItem);
     }
 
     function canDock()
@@ -116,6 +148,12 @@ Item {
 
     function splitWith(item)
     {
-        console.log(item.title);
+        space.splitWith(item, spaceItem);
+    }
+
+    function insertFirst()
+    {
+        space.hideItem(spaceItem);
+        space.insertFirst(spaceItem);
     }
 }

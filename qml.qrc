@@ -3,7 +3,7 @@
         <file>main.qml</file>
         <file>icon-menu.svg</file>
         <file>icon-job-64x64.png</file>
-        <file>MenuItem.qml</file>
+        <file>SpaceMenuItem.qml</file>
         <file>icon-units-64x64.png</file>
         <file>icon-formation-fluids-64x64.png</file>
         <file>icon-well-reservoir-64x64.png</file>

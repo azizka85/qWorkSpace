@@ -1,6 +1,6 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.4 as C2
-import QtQuick.Controls 1.4 as C1
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.4
 
 Item {
     default property alias controls: privateSpace.children
@@ -22,7 +22,7 @@ Item {
         z: 1
         visible: false
 
-        C2.ScrollView {
+        ScrollView {
             width: parent.width
             height: parent.height-24
             anchors { centerIn: parent }
@@ -76,13 +76,13 @@ Item {
     }
 
     Component {
-        id: menuItem
+        id: dockWindow
 
-        C1.MenuItem {
-            property var item
-
-            text: item.title
-            enabled: item.visible
+        Window {
+            visible: false
+            width: 960
+            height: 720
+            title: qsTr("qWorkspace")
         }
     }
 
@@ -90,20 +90,15 @@ Item {
         for(var i = 0; i < controls.length; i++)
         {
             if(i > 0) privateSpace.splitters.push(splitter.createObject(workSpace));
+            if(i > 0) privateSpace.windows.push(dockWindow.createObject(workSpace));
             controls[i].visible = false;
             controls[i].space = workSpace;
 
-            for(var j = controls.length - 1; j >= 0; j--)
-            {
-                if(controls[j] !== controls[i])
-                {
-                    var mi = menuItem.createObject(workSpace);
+            var items = [];
 
-                    mi.item = controls[j];
+            for(var j = 0; j < controls.length; j++) if(controls[i] !== controls[j]) items.push(controls[j]);
 
-                    controls[i].insertIn.insertItem(0, mi);
-                }
-            }
+            controls[i].insertInItems = items;
         }
     }
 
@@ -134,10 +129,33 @@ Item {
         }
     }
 
+    function dock(item)
+    {
+
+    }
+
     function freeItem(item)
     {
         item.parent = privateSpace;
         item.visible = false;
+    }
+
+    function unDock(item)
+    {
+        hideItem(item);
+
+        var w = getWindow(item.title);
+
+        item.parent = w.contentItem;
+        item.visible = true;
+
+        w.show();
+    }
+
+    function splitWith(item1, item2)
+    {
+        hideItem(item2);
+        insertItem(item2, item1);
     }
 
     function insertFirst(item, orientation, ratio, isFirst)
@@ -175,7 +193,7 @@ Item {
         {
             if(share !== null && share.visible !== false)
             {
-                var shareParent = share.parent;
+                var shareParent = share.parent;                
 
                 var splitter = getSplitter(item, share, isFirst, ratio, orientation);
 
@@ -198,6 +216,15 @@ Item {
         share.parent = isFirst ? splitter.spaceItem2 : splitter.spaceItem1;
 
         return splitter;
+    }
+
+    function getWindow(title)
+    {
+        var w = privateSpace.windows.pop();
+
+        w.title = title;
+
+        return w;
     }
 
     function canSplit()
