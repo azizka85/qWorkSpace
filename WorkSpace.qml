@@ -144,7 +144,7 @@ Item {
     {
         hideItem(item);
 
-        var w = getWindow(item.title);
+        var w = getWindow();
 
         item.parent = w.contentItem;
         item.visible = true;
@@ -220,6 +220,8 @@ Item {
 
     function getWindow(title)
     {
+        if(title === undefined) title = Window.window.title;
+
         var w = privateSpace.windows.pop();
 
         w.title = title;
